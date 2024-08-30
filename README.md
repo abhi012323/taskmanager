@@ -29,7 +29,7 @@ Steps to Set Up
 
     bash
 
-git clone https://github.com/your-username/task-manager-frontend.git
+git clone https://github.com/abhi012323/task-manager.git
 cd task-manager-frontend
 
 Install Dependencies:
