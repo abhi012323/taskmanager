@@ -1,27 +1,29 @@
-Task Management Frontend
+Task Manager Backend
+
 Overview
 
-This is the frontend of the Task Management Application, built using React. It provides a user interface for managing tasks, including user registration, login, and CRUD operations on tasks. The frontend communicates with the backend via RESTful APIs.
+This is the backend server for the Task Management Application. It handles user authentication, task management, and interaction with the MongoDB database. The server is built using Node.js and Express and communicates with the frontend via RESTful APIs.
 Features
 
     User Registration and Login with JWT-based Authentication.
-    Task Creation, Viewing, Updating, and Deletion.
-    State Management using Redux.
-    Form Validation and Error Handling.
+    Secure Password Storage using Bcrypt.
+    CRUD Operations for Task Management.
+    MongoDB as the Database.
 
 Technologies Used
 
-    React: JavaScript library for building user interfaces.
-    Redux: State management library for React applications.
-    Axios: Promise-based HTTP client for making API requests.
-    React Router: Declarative routing for React applications.
-    ESLint: Tool for identifying and fixing problems in JavaScript code.
+    Node.js: JavaScript runtime environment.
+    Express: Web framework for building RESTful APIs.
+    MongoDB: NoSQL database for storing user and task data.
+    Mongoose: ODM (Object Data Modeling) library for MongoDB.
+    Bcrypt: Library for hashing passwords.
+    JWT (JSON Web Token): For secure authentication.
 
 Installation
 Prerequisites
 
     Node.js and npm installed on your machine.
-    Backend server running and accessible.
+    MongoDB installed and running.
 
 Steps to Set Up
 
@@ -29,8 +31,8 @@ Steps to Set Up
 
     bash
 
-git clone https://github.com/abhi012323/task-manager.git
-cd task-manager-frontend
+git clone https://github.com/your-username/task-manager-backend.git
+cd task-manager-backend
 
 Install Dependencies:
 
@@ -41,47 +43,30 @@ npm install
 Set Up Environment Variables:
 
     Create a .env file in the root directory of your project.
-    Add the following environment variable:
+    Add the following environment variables:
 
     env
 
-    REACT_APP_API_URL=http://localhost:5000/api
+    MONGO_URI=mongodb://admin:azad9872@localhost:27017/myDatabase?authSource=admin
+    JWT_SECRET=your_jwt_secret
 
-Start the Development Server:
+Start the Server:
 
 bash
 
     npm start
 
-    The application will run on http://localhost:3000.
+    The server will start on http://localhost:5000.
 
 Project Structure
 
-    src/
-        components/: Reusable React components like forms, task lists, etc.
-        features/: Contains Redux slices and related files.
-        pages/: Specific page components like Login, Register, TaskManager.
-        services/: API service functions using Axios.
-        store/: Redux store configuration.
-        App.js: Main application component.
-        index.js: Entry point of the application.
-
-Available Scripts
-
-In the project directory, you can run:
-
-    npm start: Runs the app in development mode.
-    npm test: Launches the test runner.
-    npm run build: Builds the app for production.
-    npm run eject: Ejects the configuration files for customization.
-
-State Management
-
-    Redux: The application uses Redux for state management, with slices for managing user authentication and tasks.
+    routes/: Contains route definitions for authentication (auth.js) and task management (tasks.js).
+    models/: Contains Mongoose models for User and Task.
+    controllers/: (Optional) If you have a controllers folder, this is where the business logic for routes resides.
+    config/: Contains configuration files (if any).
+    middleware/: (Optional) Middleware for authentication, error handling, etc.
 
 API Endpoints
-
-The frontend interacts with the following backend API endpoints:
 User Authentication
 
     Register a New User
@@ -95,6 +80,8 @@ User Authentication
       "password": "your_password"
     }
 
+    Response: Returns a JWT token upon successful registration.
+
 Login an Existing User
 
     POST /api/auth/login
@@ -107,38 +94,49 @@ Login an Existing User
           "password": "your_password"
         }
 
+        Response: Returns a JWT token upon successful login.
+
 Task Management
 
     Get All Tasks
         GET /api/tasks
-        Requires a valid JWT token.
+        Protected route; requires a valid JWT token.
 
     Create a New Task
         POST /api/tasks
-        Requires a valid JWT token.
+        Request Body:
 
-    Update a Task
-        PUT /api/tasks/:id
-        Requires a valid JWT token.
+        json
+
+    {
+      "title": "New Task",
+      "description": "Task description"
+    }
+
+    Protected route; requires a valid JWT token.
+
+Update a Task
+
+    PUT /api/tasks/:id
+    Request Body:
+
+    json
+
+        {
+          "title": "Updated Task",
+          "description": "Updated description"
+        }
+
+        Protected route; requires a valid JWT token.
 
     Delete a Task
         DELETE /api/tasks/:id
-        Requires a valid JWT token.
-
-Usage
-
-    User Registration and Login:
-        Upon launching the app, users can register for a new account or log in to an existing account.
-        Upon successful login, a JWT token is stored in local storage to authenticate the user for subsequent requests.
-
-    Task Management:
-        Users can create, view, update, and delete tasks once logged in.
-        The task list is dynamically updated based on user actions.
+        Protected route; requires a valid JWT token.
 
 Security
 
-    JWT tokens are stored in local storage and are used for authenticating API requests.
-    Proper validation and error handling are implemented for form inputs.
+    Passwords are hashed using Bcrypt before storing them in the database.
+    Authentication is handled using JWT tokens, which expire after 1 hour for security.
 
 Contributing
 
